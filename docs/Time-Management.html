@@ -98,7 +98,7 @@
         <hr><address>Apache/2.4.41 (Ubuntu) Server at localhost Port 80</address>
     </div>
 
-    <div id="stealth-article" style="display:none; color: var(--text-main); background: var(--bg-light); min-height: 100%; margin: -40px;">
+    <div id="stealth-article" style="display:none; color: var(--text-main); background: var(--bg-light); min-height: 100%; margin: -40px; font-family: 'Segoe UI', system-ui, sans-serif; line-height: 1.6;">
         <nav style="position: static;">
             <div class="logo">EduOptimize PRO</div>
             <div style="font-size: 0.8rem; color: var(--text-muted);">Internal Knowledge Base v4.2</div>
@@ -192,6 +192,7 @@
             </div>
             <button class="btn btn-stealth" onclick="toggleStealth()">Toggle Stealth (Esc)</button>
             <button class="btn btn-stop" onclick="stopSim()">Stop</button>
+            <div style="font-size: 0.68rem; color: var(--text-muted); margin-top: 0.45rem; text-align: center;">Hotkey: press <strong>Space</strong> to stop</div>
             
             <div style="font-size: 0.65rem; color: var(--text-muted); margin-top: 1rem; text-align: center;">
                 Internal Use Only. Toggle stealth for focus.
@@ -226,7 +227,18 @@
     }
 
     document.addEventListener('keydown', (e) => {
-        if (e.key === "Escape") toggleStealth();
+        if (e.key === "Escape") {
+            toggleStealth();
+            return;
+        }
+
+        const targetTag = (e.target && e.target.tagName) ? e.target.tagName.toLowerCase() : '';
+        const typingTarget = targetTag === 'input' || targetTag === 'textarea' || targetTag === 'select' || (e.target && e.target.isContentEditable);
+
+        if (!typingTarget && e.code === 'Space' && statusBox.classList.contains('active')) {
+            e.preventDefault();
+            stopSim();
+        }
     });
 
     function toggleStealth() {
